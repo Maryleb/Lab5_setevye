@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title> Калькулятор матриц </title>
+</head>
+<body>
+    <form action="{{ url_for('index') }}" method="get">
+      <p>Размер матрицы: <input type = number name=matrix_size value={{matrix_size}}></p>
+      <p><input type=submit value=Показать></p>
+        {% if matrix_size != None %}
+            <p>Размер матрицы: {{matrix_size}}</p>
+            {% for i in range (0, matrix_size|int) %}
+                {% for j in range (0, matrix_size|int) %}
+                    <input type=number name={{j+matrix_size|int*i}} value=0>
+                {% endfor %}
+                <p></p>
+            {% endfor %}
+        {% endif %}
+    <!--</form>
+    <form action="{{ url_for('index') }}" method="get">-->
+        <p>Выберите операции: <br>
+            {% for i in range(len(operation_list)) %}
+                <input type = checkbox name=operation[] value={{i}}>
+                {{operation_list[i]}}<br>
+            {% endfor %}
+        </p>
+        <p><input type=submit value=Вычислить> <input type=button value=Очистить></p>
+        {% if operations_select != [] %}
+            Вы выбрали операции:
+                {% for op in operations_select %}
+
+                    {{op}}
+                    {% if op == "Обратная матрица" %}
+                        <p>Обратная матрица</p>
+                        {% set reverse = np.linalg.inv(matrix) %}
+                        <p>{{reverse}}</p>
+                    {% endif %}
+
+                    {% if op == "Квадрат матрицы" %}
+                        <p>Квадрат матрицы</p>
+                        {% set square = np.linalg.matrix_power(matrix, 2) %}
+                        <p>{{square}}</p>
+                    {% endif %}
+
+                    {% if op == "Определитель матрицы" %}
+                        <p>Определитель матрицы</p>
+                        {% set det = np.linalg.det(matrix) %}
+                        <p>{{det}}</p>
+                    {% endif %}
+                {% endfor %}
+        {% endif %}
+        {% set reverse = np.linalg.inv(matrix) %}
+        <p>{{reverse}}</p>
+
+    </form>
+</body>
+</html>
